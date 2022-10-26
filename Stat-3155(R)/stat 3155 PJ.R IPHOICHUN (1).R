@@ -1,4 +1,4 @@
-
+#https://archive.ics.uci.edu/ml/datasets/Bike+Sharing+Dataset#
 
 bike=read.csv("BikeSharing.csv")
 dim(bike); head(bike)
