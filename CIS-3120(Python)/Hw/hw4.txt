@@ -1,0 +1,43 @@
+# Ip Hoi Chun CIS-3120 ETRA April,29
+
+import numpy as np
+import pandas as pd
+#Group 2 [Last names H-R]: Assigned variable is healthy life expectancy at birth (health)
+healthy = pd.read_csv("Desktop/WHRData.csv")
+
+#1.	Reduce your dataset to the last four years (2017-2020) and keep all the variables. 
+Years_Keep = [2017, 2018, 2019, 2020]
+
+rdf = healthy[healthy.year.isin(Years_Keep)]
+rdf2 = rdf.groupby('Region')['Healthy life expectancy at birth'].mean()
+
+print("The reduced dataframe has {0} rows and {1} columns".format(rdf.shape[0],rdf.shape[1]))
+print("Are there missing values in the Healthy life expectancy at birth column?  {}".format(rdf2.isnull().any().any()))
+
+
+
+#2.	Calculate the average of your assigned variable for all countries across the four-year period. Sort the dataset to show first the countries with the highest values. 
+
+#print() may be need if you are not using Anaconda
+
+rdf.pivot_table(index = ['Country name'], values = 'Healthy life expectancy at birth', aggfunc = 'mean').sort_values(by = ['Healthy life expectancy at birth'], ascending = False)
+
+
+#3.	Calculate the median of your assigned variable by region. 
+
+#print() may be need if you are not using Anaconda
+
+rdf.pivot_table('Healthy life expectancy at birth', index = 'Region',columns = 'year' ,aggfunc = 'median')
+
+
+
+#4.Calculate the mean of the variable by region and year and graphically show how the variable has changed.  
+
+#print() may be need if you are not using Anaconda
+
+rdf.pivot_table('Healthy life expectancy at birth', index = 'Region', columns = 'year' ,aggfunc = 'mean' )
+
+
+table = rdf.pivot_table('Healthy life expectancy at birth', index = 'Region', columns = 'year' ,aggfunc = 'mean')
+
+table.plot(kind = 'bar')

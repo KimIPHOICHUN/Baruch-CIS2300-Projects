@@ -1,0 +1,59 @@
+# Ip Hoi Chun CIS-3120 ETRA March,18
+import pandas as pd
+file = pd.read_csv("Desktop/appstoregames.csv")
+
+
+#1. Use the appropriate Pandas method to describe the characteristics of your dataset.
+print("Here is the characteristics: ")
+print(file.info())
+
+
+#2. Count and show the number of apps in each category (or genre)
+# Select the Genre only from the table and show the number of each category
+print("The Genre only from the table are:")
+print(file["Genre"].value_counts())
+
+
+
+
+#3. Show all statistics (min, max, std, count and quartiles) of user ratings (out of 5) and size in same table
+print("The statistics of user ratings and size are:")
+#filter the Size and User rating into statistics 
+file_Average_User_Rating_Size = file[['Average User Rating','Size']]
+print(file_Average_User_Rating_Size.describe())
+######if table is not shown on Jupiter notebook try this
+#file_Average_User_Rating_Size.describe()
+
+
+
+#4. Filter the dataset to count and show all paid apps with ratings under 1.5
+#### Section A: Show the table
+# filtering the paid app
+file_Paid_App = file['Price'] > 0
+file_Paid_App
+# filtering the rating lower than 1.5
+file_lower_rate = file['Average User Rating'] <1.5
+#put two conditions together
+test = file[file_lower_rate & file_Paid_App]
+#Create table name, rating and price only
+print(test[['Name','Average User Rating','Price']])
+######if table is not shown on Jupiter notebook try this
+#test[['Name','Average User Rating','Price']]
+
+
+##### Section B : show the number of rows in the table (Please DO NOT PUT  Section A & B ####in the same Line)
+# print the number of rows in the table
+count = len(file[file_lower_rate & file_Paid_App])
+print('There are', count, 'paid apps with ratings under 1.5')
+
+
+
+
+#5. Write Python code to calculate which percentage of the apps 
+#in the dataset are free. Do not change Nan values to zero. Print the percentage 
+#on a 100 basis with no more than 2 decimals.
+# finding the all numbers of value in percentage and keep the Nan values
+# divided by the total number of Price including Nan Value(17007)
+p = 100. * file['Price'].value_counts(dropna=False) / len(file.Price)
+#print it as 2 decimals
+print('There are',p.iloc[0].round(2),'% of apps in the dataset are free.')

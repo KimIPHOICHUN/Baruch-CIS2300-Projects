@@ -1,0 +1,42 @@
+# Ip Hoi Chun CIS-3120 ETRA April,8
+#Search term is 'data analytics' and num of articles is 38
+#Enpoint for all groups is: Endpoint: 'https://newsapi.org/v2/everything?'
+#Query Parameters: 'q' is search term , 
+#'pageSize' is the number of articles to retrieve and 'apiKey' is your secret API key
+
+import requests 
+import json
+import pandas as pd 
+headers = {'Authorization': '******************************'}
+query_params = {
+      "q": 'data analytics',
+      'pageSize': "38"
+}
+main_url = 'https://newsapi.org/v2/everything?'
+ 
+# fetching data in json format
+res = requests.get(main_url, headers=headers, params=query_params)
+open_bbc_page = res.json()
+ 
+# getting all articles in a string article
+article = open_bbc_page["articles"]
+ 
+# empty list to hold all trending news
+results = []
+     
+for ar in article:
+    results.append(ar["title"])
+
+# printing all trending news       
+for i in range(len(results)):            
+    print(f"{i + 1}. { results[i]}")
+
+#Save json in pandas dataframe
+df = pd.DataFrame(results)
+
+# Create a CSV file
+df.to_csv('/Users/Kimip/Desktop/IpResults.csv')
+
+
+
+

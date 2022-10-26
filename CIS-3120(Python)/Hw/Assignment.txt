@@ -1,0 +1,68 @@
+# Ip Hoi Chun CIS-3120 ETRA March,1
+import requests
+from bs4 import BeautifulSoup
+ 
+
+url='http://www.theus50.com/fastfacts/area.php'
+r = requests.get(url)
+soup = BeautifulSoup(r.text)
+#find table
+table = soup.find('table')
+#print(type(table))
+#print(table)
+
+
+
+
+###find heading/title of the entire table (State)
+###h2 = <h2 class="pageTitle pushd20">Fast Facts Study Guide</h2>
+###h4 = <h4 class="pageTitle">(State Areas)</h4>
+print('Title/Heading: ', str(soup.find('h2').text), str(soup.find('h4').text))
+print()
+
+#find header
+header = []
+header_content = table.find_all('th')
+#print(header_content)
+for i in header_content:
+  header.append(i.text)
+#print(header)
+
+
+
+#find States and values(area) and print in a list of dictionary
+States = []
+#check html tag  tr for each column, td for each title
+#print(table)
+#find row
+row_content = table.find_all('tr')
+#print(row_content)
+for row in table.find_all('tr')[1:]:
+  #print(row)
+  values = []
+  for detail in row.find_all('td'):
+    values.append(detail.text)
+  
+  #print(values)
+  Final_dict = {}
+  for i in range(len(values)):
+    #print(i)
+    Final_dict[header[i]]=values[i]
+  States.append(Final_dict)
+
+for State in States:
+    print(State)
+    print()
+
+
+
+#Find AVG
+sum = 0
+for state in States:
+  area = state['Area (Sq Miles)'].replace(',','')
+  sum += int(area)
+AVG = sum/len(States)
+print('The average Area is',AVG)
+#print(Final_dict)
+
+
