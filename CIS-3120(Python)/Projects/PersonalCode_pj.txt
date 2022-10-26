@@ -1,0 +1,622 @@
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import datetime as dt
+#import CSV file
+MSFT = pd.read_csv("Desktop/MSFT.csv")
+GOOG = pd.read_csv("Desktop/GooG.csv")
+FB = pd.read_csv("Desktop/FB.csv")
+APPL = pd.read_csv("Desktop/AAPL.csv")
+
+
+# Change datetime format 
+MSFT['Date'] = pd.to_datetime(MSFT['Date'], errors='coerce')
+GOOG['Date'] = pd.to_datetime(GOOG['Date'], errors='coerce')
+APPL['Date'] = pd.to_datetime(APPL['Date'], errors='coerce')
+FB['Date'] = pd.to_datetime(FB['Date'], errors='coerce')
+
+
+
+
+
+#############################START OF MSFT ##################################
+
+
+
+
+
+#MSFT info
+MSFT.info()
+
+
+
+
+#Set Date as Index
+MSFT = MSFT.set_index(pd.DatetimeIndex(MSFT['Date'].values))
+
+
+
+
+
+# Close Price Change in 5 years
+plt.figure(figsize=(15,4.5))
+plt.plot( MSFT['Close'],  label='Close Price')
+plt.legend(bbox_to_anchor=(1.15, 1))
+plt.title('MSFT Close Price Changes from 2017 - 2021',fontsize=18)
+plt.xlabel('Year',fontsize=18)
+plt.ylabel('Price',fontsize=18)
+plt.show()
+
+
+
+
+
+# Covid Effect
+plt.figure(figsize=(15,4.5))
+plt.plot( MSFT['Close'],  label='Close Price')
+plt.title('MSFT Close Price Changes(COVID-19) from 2017 - 2021',fontsize=18)
+plt.xlabel('Year',fontsize=18)
+plt.ylabel('Price',fontsize=18)
+plt.axvline(dt.datetime(2020, 1, 15),color='r', label = 'COVID-19')
+plt.legend(bbox_to_anchor=(1.15, 1))
+plt.show()
+
+
+
+
+##################### MSFT close value mean change during 5 year of each company
+#performance of growth
+
+
+
+
+
+MSFT['Date'] = pd.to_datetime(MSFT['Date'], errors='coerce')
+MSFT_Price_Change = MSFT.groupby(MSFT.Date.dt.year).mean()
+MSFT_Price_Change = MSFT_Price_Change.groupby(['Date'])['Close'].mean().reset_index()
+MSFT_Price_Change.round(2)
+
+
+
+
+
+# Percentage of the growth
+MSFT_Price_Change["%_CHANGE"] =  MSFT_Price_Change["Close"].pct_change() * 100
+MSFT_Price_Change.round(2)
+
+
+
+
+
+##CHART OF performance of growth
+#CHART OF Percentage of the growth
+
+fig = plt.figure()
+ax = fig.add_axes([0,0,1,1])
+ax.bar(MSFT_Price_Change.Date,MSFT_Price_Change.Close, label = 'Close Price')
+ax.bar(MSFT_Price_Change.Date,MSFT_Price_Change['%_CHANGE'],label = 'Close Price % Change')
+ax.legend(bbox_to_anchor=(1.05, 1))
+ax.set_ylabel('Percentage & Price',fontsize= 20)
+ax.set_xlabel('Year',fontsize= 20)
+ax.set_title('MSFT AVG Close Price & Percentage Changes From 2016 - 2021', fontsize = 20)
+plt.show()
+
+
+
+
+
+############## MSFT performance change of a company during COVID 1 Year #Performance
+
+
+
+
+
+plt.figure(figsize=(13,5))
+MSFT_2016 = MSFT[MSFT.Date.dt.year.eq(2016)]
+plt.axvline(dt.datetime(2020, 1, 15),color='r', label = 'COVID-19')
+plt.plot(MSFT[MSFT.Date.dt.year.eq(2020)].Close, label = 'Close Price')
+plt.title('MSFT Close Price Changes From 2020Jan - 2021Jan During COVID-19', fontsize = 20)
+plt.legend(bbox_to_anchor=(1.15, 1))
+plt.xlabel("Time",fontsize = 15)
+plt.ylabel("Price",fontsize = 15)
+plt.show()
+
+
+
+
+#############################END OF MSFT ##################################
+
+
+
+
+
+#############################START OF GOOG ##################################
+
+
+
+
+#GOOG info
+GOOG.info()
+
+
+
+
+
+#Set Date as Index
+GOOG = GOOG.set_index(pd.DatetimeIndex(GOOG['Date'].values))
+
+
+
+
+
+# Close Price Change in 5 years
+plt.figure(figsize=(15,4.5))
+plt.plot(GOOG['Close'],  label='Close Price')
+plt.title('GOOG Price Changes from 2017 - 2021',fontsize=18)
+plt.xlabel('Year',fontsize=18)
+plt.ylabel('Price',fontsize=18)
+plt.legend(bbox_to_anchor=(1.15, 1))
+plt.show()
+
+
+
+
+
+# Covid Effect
+plt.figure(figsize=(15,4.5))
+plt.plot( GOOG['Close'],  label='Close Price' )
+plt.title('GOOG Close Price Changes(COVID-19) from 2017 - 2021',fontsize=18)
+plt.xlabel('Year',fontsize=18)
+plt.ylabel('Price',fontsize=18)
+plt.axvline(dt.datetime(2020, 1, 15),color='r', label = 'COVID-19')
+plt.legend(bbox_to_anchor=(1.15, 1))
+plt.show()
+
+
+
+
+
+##################### GOOG close value mean change during 5 year of each compan
+
+
+
+
+
+#TABLE OF performance of growth
+GOOG_Price_Change = GOOG.groupby(GOOG.Date.dt.year).mean()
+GOOG_Price_Change = GOOG_Price_Change.groupby(['Date'])['Close'].mean().reset_index()
+GOOG_Price_Change.round(2)
+
+
+
+
+
+# TABLE OF Percentage of the growth
+GOOG_Price_Change["%_CHANGE"] =  GOOG_Price_Change["Close"].pct_change() * 100
+GOOG_Price_Change.round(2)
+
+
+
+
+
+#CHART OF performance of growth
+fig = plt.figure()
+ax = fig.add_axes([0,0,1,1])
+ax.bar(GOOG_Price_Change.Date,GOOG_Price_Change.Close)
+ax.set_title('GOOG AVG Close Price From 2016 - 2021',fontsize= 20)
+ax.set_ylabel('Price',fontsize= 20)
+ax.set_xlabel('Year',fontsize= 20)
+plt.show()
+
+
+
+
+
+#CHART OF Percentage of the growth
+plt.bar(GOOG_Price_Change.Date,GOOG_Price_Change['%_CHANGE'])
+plt.title('GOOG Percentage of Close Price Changes from 2017 - 2021',fontsize=18)
+plt.xlabel('Year',fontsize=18)
+plt.ylabel('Percentage',fontsize=18)
+
+
+
+
+
+############## GOOG performance change of a company during COVID 1 Year #Performance
+
+
+
+
+
+plt.figure(figsize=(13,5))
+GOOG_2016 = GOOG[GOOG.Date.dt.year.eq(2016)]
+plt.axvline(dt.datetime(2020, 1, 15),color='r', label = 'COVID-19')
+plt.plot(GOOG[GOOG.Date.dt.year.eq(2020)].Close, label = 'Close Price')
+plt.title('GOOG Close Price Changes From 2020Jan - 2021Jan During COVID-19', fontsize = 20)
+plt.legend(bbox_to_anchor=(1.15, 1))
+plt.xlabel("Time",fontsize = 15)
+plt.ylabel("Price",fontsize = 15)
+plt.show()
+
+
+
+
+
+#############################END OF GOOG ##################################
+
+
+
+
+
+#############################START OF APPL ##################################
+
+
+
+
+
+#APPL info
+APPL.info()
+
+
+
+
+
+#Set Date as Index
+APPL = APPL.set_index(pd.DatetimeIndex(APPL['Date'].values))
+
+
+
+
+
+# Close Price Change in 5 years
+plt.figure(figsize=(12.2,4.5))
+plt.plot( APPL['Close'],  label='Close Price')
+plt.title('APPL Close Price Changes from 2017 - 2021',fontsize=18)
+plt.xlabel('Year',fontsize=18)
+plt.ylabel('Price',fontsize=18)
+plt.legend(bbox_to_anchor=(1.15, 1))
+plt.show()
+
+
+
+
+
+# Covid Effect
+plt.figure(figsize=(12.2,4.5))
+plt.plot( APPL['Close'],  label='Close Price')
+plt.title('APPL Close Price Changes(COVID-19) from 2017 - 2021',fontsize=18)
+plt.xlabel('Year',fontsize=18)
+plt.ylabel('Price',fontsize=18)
+plt.axvline(dt.datetime(2020, 1, 15),color='r', label = 'COVID-19')
+plt.legend(bbox_to_anchor=(1.15, 1))
+plt.show()
+
+
+
+
+
+##################### APPL close value mean change during 5 year of each company
+
+
+
+
+
+#TABLE OF performance of growth
+APPL['Date'] = pd.to_datetime(APPL['Date'], errors='coerce')
+APPL_Price_Change = APPL.groupby(APPL.Date.dt.year).mean()
+APPL_Price_Change = APPL_Price_Change.groupby(['Date'])['Close'].mean().reset_index()
+APPL_Price_Change.round(2)
+
+
+
+
+# TABLE OF Percentage of the growth
+APPL_Price_Change["%_CHANGE"] =  APPL_Price_Change["Close"].pct_change() * 100
+APPL_Price_Change.round(2)
+
+
+
+
+
+#CHART OF performance of growth
+fig = plt.figure()
+ax = fig.add_axes([0,0,1,1])
+ax.bar(APPL_Price_Change.Date,APPL_Price_Change.Close)
+ax.set_title('APPL AVG Close Price From 2016 - 2021',fontsize= 20)
+ax.set_ylabel('Price',fontsize= 20)
+ax.set_xlabel('Year',fontsize= 20)
+plt.show()
+
+
+
+
+
+#CHART OF Percentage of the growth
+plt.bar(APPL_Price_Change.Date,APPL_Price_Change['%_CHANGE'])
+plt.title('APPL Percentage of Close Price Changes from 2017 - 2021',fontsize=18)
+plt.xlabel('Year',fontsize=18)
+plt.ylabel('Percentage',fontsize=18)
+
+
+
+
+
+############## APPL performance change of a company during COVID 1 Year #Performance
+plt.figure(figsize=(13,5))
+APPL_2016 = APPL[APPL.Date.dt.year.eq(2016)]
+plt.axvline(dt.datetime(2020, 1, 15),color='r', label = 'COVID-19')
+plt.plot(APPL[APPL.Date.dt.year.eq(2020)].Close, label = 'Close Price')
+plt.title('APPL Close Price Changes From 2020Jan - 2021Jan During COVID-19', fontsize = 20)
+plt.legend(bbox_to_anchor=(1.15, 1))
+plt.xlabel("Time",fontsize = 15)
+plt.ylabel("Price",fontsize = 15)
+plt.show()
+
+
+
+
+
+#############################END OF APPL ##################################
+
+
+
+
+
+#############################START OF FB ##################################
+
+
+
+
+
+#FB info
+FB.info()
+
+
+
+
+
+#Set Date as Index
+FB = FB.set_index(pd.DatetimeIndex(FB['Date'].values))
+
+
+
+
+
+# Close Price Change in 5 years
+plt.figure(figsize=(12.2,4.5))
+plt.plot( FB['Close'],  label='Close Price')
+plt.title('FB Close Price Changes from 2017 - 2021',fontsize=18)
+plt.xlabel('Year',fontsize=18)
+plt.ylabel('Price',fontsize=18)
+plt.legend(bbox_to_anchor=(1.15, 1))
+plt.show()
+
+
+
+
+# Covid Effect
+plt.figure(figsize=(12.2,4.5)) 
+plt.plot( FB['Close'],  label='Close Price')
+plt.title('FB Close Price Changes(COVID-19) from 2017 - 2021',fontsize=18)
+plt.xlabel('Year',fontsize=18)
+plt.ylabel('Price',fontsize=18)
+plt.axvline(dt.datetime(2020, 1, 15),color='r', label = 'COVID-19')
+plt.legend(bbox_to_anchor=(1.15, 1))
+plt.show()
+
+
+
+
+
+##################### FB close value mean change during 5 year of each company
+
+
+
+
+
+#TABLE OF performance of growth
+FB_Price_Change = FB.groupby(FB.Date.dt.year).mean()
+FB_Price_Change = FB_Price_Change.groupby(['Date'])['Close'].mean().reset_index()
+FB_Price_Change.round(2)
+
+
+
+
+
+# TABLE OF Percentage of the growth
+FB_Price_Change["%_CHANGE"] =  FB_Price_Change["Close"].pct_change() * 100
+FB_Price_Change.round(2)
+
+
+
+
+
+#CHART OF performance of growth
+fig = plt.figure()
+ax = fig.add_axes([0,0,1,1])
+ax.bar(FB_Price_Change.Date,FB_Price_Change.Close)
+ax.set_title('FB AVG Close Price From 2016 - 2021',fontsize= 20)
+ax.set_ylabel('Price',fontsize= 20)
+ax.set_xlabel('Year',fontsize= 20)
+plt.show()
+
+
+
+
+
+#CHART OF Percentage of the growth
+plt.bar(FB_Price_Change.Date,FB_Price_Change['%_CHANGE'])
+plt.title('FB Percentage of Close Price Changes from 2017 - 2021',fontsize=18)
+plt.xlabel('Year',fontsize=18)
+plt.ylabel('Percentage',fontsize=18)
+
+
+
+
+############## FB performance change of a company during COVID 1 Year #Performance
+plt.figure(figsize=(13,5))
+FB_2016 = FB[FB.Date.dt.year.eq(2016)]
+plt.axvline(dt.datetime(2020, 1, 15),color='r', label = 'COVID-19')
+plt.plot(FB[FB.Date.dt.year.eq(2020)].Close, label = 'Close Price')
+plt.title('FB Close Price Changes From 2020Jan - 2021Jan During COVID-19', fontsize = 20)
+plt.legend(bbox_to_anchor=(1.15, 1))
+plt.xlabel("Time",fontsize = 15)
+plt.ylabel("Price",fontsize = 15)
+plt.show()
+
+
+
+
+
+
+
+#############################END OF FB ##################################
+
+
+
+
+##########Comparing Performance
+
+
+##################Quarter Performance with Google
+
+
+#Create Quarter
+MSFT['quarter'] = pd.PeriodIndex(MSFT.Date, freq='Q')
+GOOG['quarter'] = pd.PeriodIndex(GOOG.Date, freq='Q')
+APPL['quarter'] = pd.PeriodIndex(APPL.Date, freq='Q')
+FB['quarter'] = pd.PeriodIndex(FB.Date, freq='Q')
+
+#Create AVG Price of Close Price for those fimrs
+MSFT_q = MSFT.groupby(MSFT.quarter).mean()
+GOOG_q = GOOG.groupby(GOOG.quarter).mean()
+APPL_q = APPL.groupby(APPL.quarter).mean()
+FB_q = FB.groupby(FB.quarter).mean()
+
+### Create chart for 4 Company
+plt.close('all')
+plt.figure(figsize=(10,8))
+MSFT_q.Close.plot(label = 'MSFT')
+APPL_q.Close.plot(label = 'APPL')
+GOOG_q.Close.plot(label = 'GOOG')
+FB_q.Close.plot(label = 'FB')
+plt.tick_params(axis='both',labelsize=20)
+plt.legend(bbox_to_anchor=(1.2, 1))
+plt.xlabel("Quarter",fontsize = 15)
+plt.ylabel("Price",fontsize = 15)
+#Quarter Line
+plt.axvline(dt.datetime(2016,12,31),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2017,12,31),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2018,12,31),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2019,12,31),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2020,12,31),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2016,3,31),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2017,3,31),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2018,3,31),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2019,3,31),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2020,3,31),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2016,6,30),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2017,6,30),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2018,6,30),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2019,6,30),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2020,6,30),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2016,9,30),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2017,9,30),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2018,9,30),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2019,9,30),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2020,9,30),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2021,3,31),color='k',linestyle="dashed")
+plt.title('Overall Stock Price Changes in Quarter in 5 Year', fontsize = 15)
+plt.show()
+
+
+
+##################Quarter Performance without Google
+
+
+#Create Quarter
+MSFT['quarter'] = pd.PeriodIndex(MSFT.Date, freq='Q')
+GOOG['quarter'] = pd.PeriodIndex(GOOG.Date, freq='Q')
+APPL['quarter'] = pd.PeriodIndex(APPL.Date, freq='Q')
+FB['quarter'] = pd.PeriodIndex(FB.Date, freq='Q')
+
+#Create AVG Price of Close Price for those fimrs
+MSFT_q = MSFT.groupby(MSFT.quarter).mean()
+GOOG_q = GOOG.groupby(GOOG.quarter).mean()
+APPL_q = APPL.groupby(APPL.quarter).mean()
+FB_q = FB.groupby(FB.quarter).mean()
+
+### Create chart for 3 Company (no Google)
+plt.close('all')
+plt.figure(figsize=(10,8))
+MSFT_q.Close.plot(label = 'MSFT')
+APPL_q.Close.plot(label = 'APPL')
+FB_q.Close.plot(label = 'FB', color = 'r')
+plt.tick_params(axis='both',labelsize=20)
+plt.legend(bbox_to_anchor=(1.2, 1))
+plt.xlabel("Quarter",fontsize = 15)
+plt.ylabel("Price",fontsize = 15)
+#Quarter Line
+plt.axvline(dt.datetime(2016,12,31),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2017,12,31),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2018,12,31),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2019,12,31),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2020,12,31),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2016,3,31),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2017,3,31),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2018,3,31),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2019,3,31),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2020,3,31),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2016,6,30),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2017,6,30),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2018,6,30),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2019,6,30),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2020,6,30),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2016,9,30),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2017,9,30),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2018,9,30),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2019,9,30),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2020,9,30),color='k',linestyle="dashed")
+plt.axvline(dt.datetime(2021,3,31),color='k',linestyle="dashed")
+plt.title('Overall Stock Price Changes in Quarter in 5 Year', fontsize = 15)
+plt.show()
+
+
+
+
+
+#########3Overall Stock Price Perforamce druing last year with COVID
+
+plt.close('all')
+plt.figure(figsize=(13,5))
+FB_2016 = FB[FB.Date.dt.year.eq(2016)]
+plt.axvline(dt.datetime(2020, 1, 15),color='k', label = 'COVID-19')
+plt.plot(FB[FB.Date.dt.year.eq(2020)].Close, label = 'FB Close Price')
+plt.title('OVERALL Close Price Changes From 2020Jan - 2021Jan During COVID-19', fontsize = 20)
+plt.plot(APPL[APPL.Date.dt.year.eq(2020)].Close, label = 'APPL Close Price')
+plt.plot(GOOG[GOOG.Date.dt.year.eq(2020)].Close, label = 'GOOG Close Price')
+plt.plot(MSFT[MSFT.Date.dt.year.eq(2020)].Close, label = 'MSFT Close Price')
+plt.legend(bbox_to_anchor=(1.2, 1))
+plt.xlabel("Time",fontsize = 15)
+plt.ylabel("Price",fontsize = 15)
+plt.show()
+
+
+
+
+
+#######OVERALL Percentage of Close Price Changes in 5 year 
+plt.close('all')
+plt.figure(figsize=(13,5))
+plt.plot(FB_Price_Change.Date,FB_Price_Change['%_CHANGE'],label = 'FB Close Price')
+plt.plot(GOOG_Price_Change.Date,GOOG_Price_Change['%_CHANGE'],label = 'GOOG Close Price')
+plt.plot(APPL_Price_Change.Date,APPL_Price_Change['%_CHANGE'],label = 'APPL Close Price')
+plt.plot(MSFT_Price_Change.Date,MSFT_Price_Change['%_CHANGE'],label = 'MSFT Close Price')
+plt.legend(bbox_to_anchor=(1.2, 1))
+plt.xlabel('Year',fontsize = 15) 
+plt.title('OVERALL Close Price % Changes From 2017 - 2021', fontsize = 20)
+plt.ylabel('Percentage Changes',fontsize = 15) 
+
+
+
