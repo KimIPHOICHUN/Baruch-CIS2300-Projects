@@ -34,7 +34,7 @@ for i in range(int(CloseTime) - int(StartTime)):
   StartTime = int(StartTime) + 1
   print()
 
-#MAX, MIN, AVG
+#Calculating MAX, MIN, AVG
 MaxValue = max(Customer_List.values())
 MaxKey = max(Customer_List, key = Customer_List.get)
 print()
@@ -52,7 +52,7 @@ print('The Average Number of Customers in a day is ', AVG)
 
 print('Thanks You for Using!')
 
-#Graph
+#Visualising Graph
 import matplotlib.pyplot as plt 
 keys = Customer_List.keys()
 values = Customer_List.values()
